@@ -17,9 +17,10 @@ TEST_COMMENT = 1
 
 # Given comment text, can/should the bot reply to it?
 def get_comment_response_code(comment):
+	print("testing response code for comment: " + str(comment))
 	if "this is for testing" in comment.body:
 		return TEST_COMMENT
-	return DO_NOT_RESPOND
+	return -1 #DO_NOT_RESPOND
 
 	
 # Given the comment, sentiment, and response code, generate a response
@@ -27,7 +28,10 @@ def get_comment_response_code(comment):
 # sentiment: number between 0 (negative) and 1 (positive)
 # response code: See the list of codes above
 def generate_comment_reply(comment, sentiment, responsecode):
+	print(comment.body)
 	print(sentiment)
+	print(responsecode)
+	print("+++\n")
 	if responsecode == TEST_COMMENT:
 		return "Test comment"
 	return "Invalid Response Code"
@@ -43,7 +47,9 @@ def bot_login():
 
 def run_bot(r, comments_replied_to):
 	print ("Searching last " + str(comments_to_search) + " comments")
-	all_comments =  r.subreddit('test').comments(limit=comments_to_search)
+	all_comments = []
+	for comment in r.subreddit('politics').comments(limit=comments_to_search):
+		all_comments.append(comment)
 	comment_sentiments = []
 	if include_sentiments:
 		sentiment_docs = []
@@ -64,15 +70,17 @@ def run_bot(r, comments_replied_to):
 			comment_sentiments.append(-1) # -1 when it is not being used.
 	
 	i = 0
+	print(all_comments)
 	for comment in all_comments:
 		i = i + 1
+		print(i)
 		comment_response_code = get_comment_response_code(comment) 
 		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
 			if reply_to_comments:
 				comment.reply(resp)
-			print ("Replied to comment " + comment.id)
-			print ("Response: " + resp)
+				print ("Replied to comment " + comment.id)
+			print ("Response: " + str(resp))
 			
 			if reply_to_comments:
 				comments_replied_to.append(comment.id)
