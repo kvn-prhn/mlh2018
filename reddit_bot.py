@@ -56,28 +56,28 @@ def generate_comment_reply(comment, sentiment):
 	print("+++\n")
 	lowerc = comment.body.lower()
 	if "trump" in lowerc and "impeach" in lowerc:
-            xra=random.random(1,3)
-            if xra is 1:
-                return tweetimpeach
-            elif xra is 2:
-                return tweetimpeach2
-            else:
-                return tweetimpeach3 
-        if "trump" in lowerc and "fuckface" in lowerc:
-            return fkface
-        if "trump" in lowerc and "twitter" in lowerc:
-            return twitter
-        if "trump" in lowerc:
-            if "economy" in lowerc or "taxes" in lowerc:
-                return econ
-        if "global warming" in lowerc:
-	    if "china" in lowerc or "chinese" in lowerc:
-		    return GLOBAL_WARMING_1
+		xra=random.random(1,3)
+		if xra is 1:
+			return tweetimpeach
+		elif xra is 2:
+			return tweetimpeach2
+		else:
+			return tweetimpeach3 
+	if "trump" in lowerc and "fuckface" in lowerc:
+		return fkface
+	if "trump" in lowerc and "twitter" in lowerc:
+		return twitter
+	if "trump" in lowerc:
+		if "economy" in lowerc or "taxes" in lowerc:
+			return econ
+	if "global warming" in lowerc:
+		if "china" in lowerc or "chinese" in lowerc:
+			return GLOBAL_WARMING_1
 		# else
-	    if random.random() < 0.5:
-	    	return GLOBAL_WARMING_2
-	    else:
-	    	return GLOBAL_WARMING_3
+		if random.random() < 0.5:
+			return GLOBAL_WARMING_2
+		else:
+			return GLOBAL_WARMING_3
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
 	if "trump" in lowerc and if sentiment < 0.9 and if sentiment > 0.2:
@@ -87,7 +87,7 @@ def generate_comment_reply(comment, sentiment):
 	if "new york" in lowerc:
 		return "It’s freezing and snowing in New York--we need global warming!\n https://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
 
-	if "economy" in lowerc or "taxes" in lowerc or "employment" in lowerc:
+	if "trump" in lowerc and ("economy" in lowerc or "taxes" in lowerc or "employment" in lowerc):
 		return TAXES_ECONOMY
 	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
 		return KANYE_KARDASHIAN
@@ -99,13 +99,13 @@ def generate_comment_reply(comment, sentiment):
 		else:
 			return WITCH_HUNT_2
 	if "china" in lowerc or "chinese" in lowerc:
-                return CHINA
-        if "maga" in lowerc or "make america great again" in lowerc:
-                return MAGA
-        if "windmills" in lowerc:
-                return WINDMILLS
-        if "kate middleton" in lowerc:
-                return KATE_MIDDLETON
+		return CHINA
+	if "maga" in lowerc or "make america great again" in lowerc:
+		return MAGA
+	if "windmills" in lowerc:
+		return WINDMILLS
+	if "kate middleton" in lowerc:
+		return KATE_MIDDLETON
 	return ""
 
 	
