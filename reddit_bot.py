@@ -7,8 +7,8 @@ import requests
 sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
 reply_to_comments = False
-include_sentiments = False
-comments_to_search = 10
+include_sentiments = True
+comments_to_search = 20
 
 # comment response codes
 DO_NOT_RESPOND = 0
@@ -19,21 +19,22 @@ TEST_COMMENT = 1
 def get_comment_response_code(comment):
 	if "this is for testing" in comment.body:
 		return TEST_COMMENT
-	return DO_NOT_RESPOND
+	return -1 #DO_NOT_RESPOND
 
 	
 # Given the comment, sentiment, and response code, generate a response
 # comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
-# sentiment: number between 0 (negative) and 1 (positive)
+# sentiment: number between 0 (negative) and 1 (positive). -1 for when there is no sentiment analysis
 # response code: See the list of codes above
 def generate_comment_reply(comment, sentiment, responsecode):
+	print(comment.body)
 	print(sentiment)
+	print(responsecode)
+	print("+++\n")
 	if responsecode == TEST_COMMENT:
 		return "Test comment"
 	return "Invalid Response Code"
 
-	
-	
 def bot_login():
 	print ("Logging in...")
 	r = praw.Reddit('replybot', user_agent='TrumpReplyBot user agent')
@@ -43,7 +44,9 @@ def bot_login():
 
 def run_bot(r, comments_replied_to):
 	print ("Searching last " + str(comments_to_search) + " comments")
-	all_comments =  r.subreddit('test').comments(limit=comments_to_search)
+	all_comments = []
+	for comment in r.subreddit('politics').comments(limit=comments_to_search):
+		all_comments.append(comment)
 	comment_sentiments = []
 	if include_sentiments:
 		sentiment_docs = []
@@ -64,6 +67,7 @@ def run_bot(r, comments_replied_to):
 			comment_sentiments.append(-1) # -1 when it is not being used.
 	
 	i = 0
+	print(all_comments)
 	for comment in all_comments:
 		i = i + 1
 		comment_response_code = get_comment_response_code(comment) 
@@ -71,8 +75,8 @@ def run_bot(r, comments_replied_to):
 			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
 			if reply_to_comments:
 				comment.reply(resp)
-			print ("Replied to comment " + comment.id)
-			print ("Response: " + resp)
+				print ("Replied to comment " + comment.id)
+			print ("Response: " + str(resp))
 			
 			if reply_to_comments:
 				comments_replied_to.append(comment.id)
