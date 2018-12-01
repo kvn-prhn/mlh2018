@@ -32,10 +32,10 @@ COFEVE = 12
 THE_WALL = "We have to maintain strong borders or we will no longer have a country that we can be proud of – and if we show any weakness, millions of people will journey into our country. \n\nhttps://twitter.com/realDonaldTrump/status/1009928980475138048"
 MAC_MILLER = "It was just announced that @MacMiller’s song 'DonaldTrump' went platinum—tell  Mac Miller to kiss my ass!\n\nhttps://twitter.com/realDonaldTrump/status/309346134600601601"
 THE_DONALD_1 = ""
-CHINA = 16
-MAGMA = 17
-WINDMILLS = 18
-KATE_MIDDLETON = 19
+CHINA = "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive.\nhttps://twitter.com/realDonaldTrump/status/265895292191248385""
+MAGA = "My supporters are the smartest, strongest, most hard working and most loyal that we have seen in our countries history. It is a beautiful thing to watch as we win elections and gather support from all over the country. As we get stronger, so does our country. Best numbers ever!\nhttps://twitter.com/realDonaldTrump/status/1007974129474121728"
+WINDMILLS = "Windmills are the greatest threat in the US to both bald and golden eagles. Media claims fictional ‘global warming’ is worse.\nhttps://twitter.com/realDonaldTrump/status/509436043368873984"
+KATE_MIDDLETON = "Who wouldn't take Kate's [Middleston] picture and make lots of money if she does the nude sunbathing thing. Come on Kate!\nhttps://twitter.com/realDonaldTrump/status/247757867032117248"
 MAKING_DEALS = "Deals are my art form. Other people paint beautifully or write poetry. I like making deals, preferably big deals. That's how I get my kicks \n\nhttps://twitter.com/realdonaldtrump/status/549590421190770688?lang=en"
 WITCH_HUNT_1 = "A total WITCH HUNT with massive conflicts of interest! \n\nhttps://twitter.com/realDonaldTrump/status/975720503997620224"
 WITCH_HUNT_2 = "A TOTAL WITCH HUNT!!! \n\nhttps://twitter.com/realDonaldTrump/status/983662953894436864"
@@ -71,6 +71,14 @@ def generate_comment_reply(comment, sentiment):
 			return WITCH_HUNT_1
 		else:
 			return WITCH_HUNT_2
+	if "china" in lowerc or "chinese" in lowerc:
+                return CHINA
+        if "maga" in lowerc or "make america great again" in lowerc:
+                return MAGA
+        if "windmills" in lowerc:
+                return WINDMILLS
+        if "kate middleton" in lowerc:
+                return KATE_MIDDLETON
 	return ""
 
 	
