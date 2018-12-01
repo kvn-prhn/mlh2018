@@ -9,9 +9,9 @@ import random
 
 sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
-reply_to_comments = False
+reply_to_comments = True
 include_sentiments = True
-comments_to_search = 20
+comments_to_search = 1000
 
 # comment response codes
 DO_NOT_RESPOND = 0
@@ -53,8 +53,9 @@ def generate_comment_reply(comment, sentiment):
 	print(sentiment)
 	print("+++\n")
 	lowerc = comment.body.lower()
-        if "trump" not in lowerc or "donald" not in lowerc:
-            return ""
+	if "trump" not in lowerc or "donald" not in lowerc:
+		return ""
+	
 	if "trump" in lowerc and "impeach" in lowerc:
 		xra=random.randint(1,3)
 		if xra is 1:
@@ -81,13 +82,6 @@ def generate_comment_reply(comment, sentiment):
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
 	
-	if "trump" in lowerc and sentiment < 0.9 and sentiment > 0.2:
-		return "Every time I speak of the haters and losers I do so with great love and affection. They cannot help the fact that they were born fucked up!\n https://twitter.com/realDonaldTrump/status/516382177798680576"
-	if "trump" in lowerc and sentiment < 0.2:
-		return "SEE YOU IN COURT, THE SECURITY OF OUR NATION IS AT STAKE!\n https://twitter.com/realdonaldtrump/status/829836231802515457?lang=en"
-	if "new york" in lowerc:
-		return "It’s freezing and snowing in New York--we need global warming!\n https://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
-
 	if "trump" in lowerc and ("economy" in lowerc or "taxes" in lowerc or "employment" in lowerc):
 		return TAXES_ECONOMY
 	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
@@ -107,6 +101,13 @@ def generate_comment_reply(comment, sentiment):
 		return WINDMILLS
 	if "kate middleton" in lowerc:
 		return KATE_MIDDLETON
+	if "trump" in lowerc and sentiment < 0.9 and sentiment > 0.2:
+		return "Every time I speak of the haters and losers I do so with great love and affection. They cannot help the fact that they were born fucked up!\n https://twitter.com/realDonaldTrump/status/516382177798680576"
+	if "trump" in lowerc and sentiment < 0.2:
+		return "SEE YOU IN COURT, THE SECURITY OF OUR NATION IS AT STAKE!\n https://twitter.com/realdonaldtrump/status/829836231802515457?lang=en"
+	if "new york" in lowerc:
+		return "It’s freezing and snowing in New York--we need global warming!\n https://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
+
 	return ""
 
 	
@@ -143,15 +144,16 @@ def run_bot(r, comments_replied_to):
 	
 	i = 0
 	for comment in all_comments:
+		time.sleep(0.07)
 		if comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_sentiments[i])
-			if reply_to_comments and not len(resp) > 0:
+			if reply_to_comments and len(resp) > 0:
 				comment.reply(resp)
 				print ("Replied to comment " + comment.id)
 			print ("Response: " + str(resp))
 			
-			if reply_to_comments:
-				comments_replied_to.append(comment.id)
+			if reply_to_comments and len(resp) > 0:
+				comments_replied_to.append(str(comment.id))
 				with open ("comments_replied_to.txt", "a") as f:
 					f.write(comment.id + "\n")
 		i = i + 1
@@ -171,7 +173,7 @@ def get_saved_comments():
 		with open("comments_replied_to.txt", "r") as f:
 			comments_replied_to = f.read()
 			comments_replied_to = comments_replied_to.split("\n")
-			comments_replied_to = filter(None, comments_replied_to)
+			#comments_replied_to = filter(None, comments_replied_to)
 
 	return comments_replied_to
 
