@@ -16,11 +16,13 @@ comments_to_search = 20
 # comment response codes
 DO_NOT_RESPOND = 0
 TEST_COMMENT = 1
-GLOBAL_WARMING = 2
-KANYE_KARDASHIAN = 3
+GLOBAL_WARMING_1 = "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
+GLOBAL_WARMING_2 = "It’s freezing and snowing in New York--we need global warming! \n\nhttps://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
+GLOBAL_WARMING_3 = "Windmills are the greatest threat in the US to both bald and golden eagles. Media claims fictional 'global warming’ is worse.\n\nhttps://twitter.com/realDonaldTrump/status/509436043368873984"
+KANYE_KARDASHIAN = "Thank you Kanye, very cool! \n\nhttps://twitter.com/realDonaldTrump/status/989225812166696960"
 RUSSIA = 4
 PUTIN = 5
-DIET_COKE = 6
+DIET_COKE = "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
 TRUMP_INSULT = 7
 NEW_YORK = 8
 tweetimpeach = "As has been stated by numerous legal scholars, I have the absolute right to PARDON myself,
@@ -31,15 +33,18 @@ tweetimpeach3="We need a President who isn't a laughing stock to the entire Worl
 fkface="Amazing how the haters & losers keep tweeting the name “F**kface Von Clownstick” like they are so original & like no one else is doing it…"
 twitter = "Thanks- many are saying I'm the best 140 character writer in the world. It's easy when it's fun."
 econ= "Employment is up, Taxes are DOWN. Enjoy!"
+TAXES_ECONOMY = "Employment is up, Taxes are DOWN. Enjoy! \n\nhttps://twitter.com/realDonaldTrump/status/986218862625648640"
 COFEVE = 12
-THE_WALL = 13
-MAC_MILLER = 14
-THE_DONALD = 15
+THE_WALL = "We have to maintain strong borders or we will no longer have a country that we can be proud of – and if we show any weakness, millions of people will journey into our country. \n\nhttps://twitter.com/realDonaldTrump/status/1009928980475138048"
+MAC_MILLER = "It was just announced that @MacMiller’s song 'DonaldTrump' went platinum—tell  Mac Miller to kiss my ass!\n\nhttps://twitter.com/realDonaldTrump/status/309346134600601601"
+THE_DONALD_1 = ""
 CHINA = 16
 MAGMA = 17
 WINDMILLS = 18
 KATE_MIDDLETON = 19
-
+MAKING_DEALS = "Deals are my art form. Other people paint beautifully or write poetry. I like making deals, preferably big deals. That's how I get my kicks \n\nhttps://twitter.com/realdonaldtrump/status/549590421190770688?lang=en"
+WITCH_HUNT_1 = "A total WITCH HUNT with massive conflicts of interest! \n\nhttps://twitter.com/realDonaldTrump/status/975720503997620224"
+WITCH_HUNT_2 = "A TOTAL WITCH HUNT!!! \n\nhttps://twitter.com/realDonaldTrump/status/983662953894436864"
 
 # Given the comment, sentiment, and response code, generate a response
 # comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
@@ -50,13 +55,7 @@ def generate_comment_reply(comment, sentiment):
 	print(sentiment)
 	print("+++\n")
 	lowerc = comment.body.lower()
-	if "global warming" in lowerc:
-		if "china" in lowerc:
-                    return "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
-		return "It’s freezing and snowing in New York--we need global warming! \n\nhttps://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
-	if "diet coke" in lowerc or "diet soda" in lowerc:
-		return "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
-        if "trump" in lowerc and "impeach" in lowerc:
+	if "trump" in lowerc and "impeach" in lowerc:
             xra=random.random(1,3)
             if xra is 1:
                 return tweetimpeach
@@ -71,7 +70,28 @@ def generate_comment_reply(comment, sentiment):
         if "trump" in lowerc:
             if "economy" in lowerc or "taxes" in lowerc:
                 return econ
-
+        if "global warming" in lowerc:
+	    if "china" in lowerc or "chinese" in lowerc:
+		    return GLOBAL_WARMING_1
+		# else
+	    if random.random() < 0.5:
+	    	return GLOBAL_WARMING_2
+	    else:
+	    	return GLOBAL_WARMING_3
+	if "diet coke" in lowerc or "diet soda" in lowerc:
+		return DIET_COKE
+	
+	if "economy" in lowerc or "taxes" in lowerc or "employment" in lowerc:
+		return TAXES_ECONOMY
+	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
+		return KANYE_KARDASHIAN
+	if "deal" in lowerc and ("trump" in lowerc or "donald" in lowerc):
+		return MAKING_DEALS
+	if ("trump" in lowerc or "president" in lowerc) and ("russia" in lowerc or "investigation" in lowerc):
+		if random.random() < 0.5:
+			return WITCH_HUNT_1
+		else:
+			return WITCH_HUNT_2
 	return ""
 
 	
@@ -98,7 +118,6 @@ def run_bot(r, comments_replied_to):
 		for comment in all_comments:
 			sentiment_docs.append({'id': str(i), 'language': 'en', 'text': str(comment.body)});
 			i = i + 1
-		print(sentiment_docs)
 		documents = {'documents' : sentiment_docs}
 		headers = {'Ocp-Apim-Subscription-Key': config.subscription_key, 'Content-Type': "application/json"}
 		# sentiment API stuff
@@ -108,7 +127,6 @@ def run_bot(r, comments_replied_to):
 			comment_sentiments.insert(int(sres['id']), sres['score'])
 	
 	i = 0
-	print(all_comments)
 	for comment in all_comments:
 		if comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_sentiments[i])
