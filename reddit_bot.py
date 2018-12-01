@@ -25,17 +25,23 @@ PUTIN = 5
 DIET_COKE = "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
 TRUMP_INSULT = 7
 NEW_YORK = 8
-IMPEACH = 9
-TWITTER = 10
+tweetimpeach = "As has been stated by numerous legal scholars, I have the absolute right to PARDON myself,
+but why would I do that when I have done nothing wrong? In the meantime, the never ending Witch Hunt, 
+led by 13 very Angry and Conflicted Democrats (& others) continues into the mid-terms!"
+tweetimpeach2="are you allowed to impeach a president for gross incompetence?"
+tweetimpeach3="We need a President who isn't a laughing stock to the entire World. We need a truly great leader, a genius at strategy and winning. Respect!"
+fkface="Amazing how the haters & losers keep tweeting the name “F**kface Von Clownstick” like they are so original & like no one else is doing it…"
+twitter = "Thanks- many are saying I'm the best 140 character writer in the world. It's easy when it's fun."
+econ= "Employment is up, Taxes are DOWN. Enjoy!"
 TAXES_ECONOMY = "Employment is up, Taxes are DOWN. Enjoy! \n\nhttps://twitter.com/realDonaldTrump/status/986218862625648640"
 COFEVE = 12
 THE_WALL = "We have to maintain strong borders or we will no longer have a country that we can be proud of – and if we show any weakness, millions of people will journey into our country. \n\nhttps://twitter.com/realDonaldTrump/status/1009928980475138048"
 MAC_MILLER = "It was just announced that @MacMiller’s song 'DonaldTrump' went platinum—tell  Mac Miller to kiss my ass!\n\nhttps://twitter.com/realDonaldTrump/status/309346134600601601"
 THE_DONALD_1 = ""
-CHINA = 16
-MAGMA = 17
-WINDMILLS = 18
-KATE_MIDDLETON = 19
+CHINA = "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive.\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
+MAGA = "My supporters are the smartest, strongest, most hard working and most loyal that we have seen in our countries history. It is a beautiful thing to watch as we win elections and gather support from all over the country. As we get stronger, so does our country. Best numbers ever!\nhttps://twitter.com/realDonaldTrump/status/1007974129474121728"
+WINDMILLS = "Windmills are the greatest threat in the US to both bald and golden eagles. Media claims fictional ‘global warming’ is worse.\nhttps://twitter.com/realDonaldTrump/status/509436043368873984"
+KATE_MIDDLETON = "Who wouldn't take Kate's [Middleston] picture and make lots of money if she does the nude sunbathing thing. Come on Kate!\nhttps://twitter.com/realDonaldTrump/status/247757867032117248"
 MAKING_DEALS = "Deals are my art form. Other people paint beautifully or write poetry. I like making deals, preferably big deals. That's how I get my kicks \n\nhttps://twitter.com/realdonaldtrump/status/549590421190770688?lang=en"
 WITCH_HUNT_1 = "A total WITCH HUNT with massive conflicts of interest! \n\nhttps://twitter.com/realDonaldTrump/status/975720503997620224"
 WITCH_HUNT_2 = "A TOTAL WITCH HUNT!!! \n\nhttps://twitter.com/realDonaldTrump/status/983662953894436864"
@@ -49,14 +55,29 @@ def generate_comment_reply(comment, sentiment):
 	print(sentiment)
 	print("+++\n")
 	lowerc = comment.body.lower()
-	if "global warming" in lowerc:
-		if "china" in lowerc or "chinese" in lowerc:
-			return GLOBAL_WARMING_1
+	if "trump" in lowerc and "impeach" in lowerc:
+            xra=random.random(1,3)
+            if xra is 1:
+                return tweetimpeach
+            elif xra is 2:
+                return tweetimpeach2
+            else:
+                return tweetimpeach3 
+        if "trump" in lowerc and "fuckface" in lowerc:
+            return fkface
+        if "trump" in lowerc and "twitter" in lowerc:
+            return twitter
+        if "trump" in lowerc:
+            if "economy" in lowerc or "taxes" in lowerc:
+                return econ
+        if "global warming" in lowerc:
+	    if "china" in lowerc or "chinese" in lowerc:
+		    return GLOBAL_WARMING_1
 		# else
-		if random.random() < 0.5:
-			return GLOBAL_WARMING_2
-		else:
-			return GLOBAL_WARMING_3
+	    if random.random() < 0.5:
+	    	return GLOBAL_WARMING_2
+	    else:
+	    	return GLOBAL_WARMING_3
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
 	if "trump" in lowerc and if sentiment < 0.9 and if sentiment > 0.2:
@@ -77,6 +98,14 @@ def generate_comment_reply(comment, sentiment):
 			return WITCH_HUNT_1
 		else:
 			return WITCH_HUNT_2
+	if "china" in lowerc or "chinese" in lowerc:
+                return CHINA
+        if "maga" in lowerc or "make america great again" in lowerc:
+                return MAGA
+        if "windmills" in lowerc:
+                return WINDMILLS
+        if "kate middleton" in lowerc:
+                return KATE_MIDDLETON
 	return ""
 
 	
