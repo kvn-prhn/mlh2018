@@ -3,42 +3,39 @@ import config
 import time
 import os
 
-comments_to_search = 1
+comments_to_search = 5
 
 # Given comment text, can/should the bot reply to it?
 def can_reply_to_comment(text):
-	
-	return True
+	if "asdfjsdfjsdlkfjlsdkaflkdsf" in text:
+		return True
+	return False
 	
 def process_reply(text):
 	return "test"
 
 def bot_login():
 	print ("Logging in...")
-	r = praw.Reddit(username = config.username,
-				password = config.password,
-				client_id = config.client_id,
-				client_secret = config.client_secret,
-				user_agent = "The Reddit Commenter v1.0")
+	r = praw.Reddit('replybot', user_agent='TrumpReplyBot user agent')
 	print ("Logged in!")
 
 	return r
 
 def run_bot(r, comments_replied_to):
-	print ("Searching last " + comments_to_search + " comments")
+	print ("Searching last " + str(comments_to_search) + " comments")
 
 	for comment in r.subreddit('test').comments(limit=comments_to_search):
 		if can_reply_to_comment(comment.body) and comment.id not in comments_replied_to and comment.author != r.user.me():
-			print ("String with \"sample user comment\" found in comment " + comment.id)
 			print (comment)
 			print(type(comment))
-			#comment.reply("Hey, I like your comment!")
-			#print "Replied to comment " + comment.id
+			print(comment)
+			comment.reply(process_reply(comment.body))
+			print ("Replied to comment " + comment.id)
 
-			#comments_replied_to.append(comment.id)
+			comments_replied_to.append(comment.id)
 
-			#with open ("comments_replied_to.txt", "a") as f:
-			#	f.write(comment.id + "\n")
+			with open ("comments_replied_to.txt", "a") as f:
+				f.write(comment.id + "\n")
 
 	print ("Search Completed.")
 
