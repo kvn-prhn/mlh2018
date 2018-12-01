@@ -48,28 +48,27 @@ def run_bot(r, comments_replied_to):
 	for comment in r.subreddit('politics').comments(limit=comments_to_search):
 		all_comments.append(comment)
 	comment_sentiments = []
+	for comment in all_comments:
+		comment_sentiments.append(-1) # -1 when it is not being used.
+	
 	if include_sentiments:
 		sentiment_docs = []
 		i = 0
 		for comment in all_comments:
 			sentiment_docs.append({'id': str(i), 'language': 'en', 'text': str(comment.body)});
 			i = i + 1
+		print(sentiment_docs)
 		documents = {'documents' : sentiment_docs}
 		headers = {'Ocp-Apim-Subscription-Key': config.subscription_key, 'Content-Type': "application/json"}
 		# sentiment API stuff
 		response = requests.post(sentiment_api_url, headers=headers, json=documents)
 		sentiments = response.json()
 		for sres in sentiments['documents']:
-			print(sres)
 			comment_sentiments.insert(int(sres['id']), sres['score'])
-	else:
-		for comment in all_comments:
-			comment_sentiments.append(-1) # -1 when it is not being used.
 	
 	i = 0
 	print(all_comments)
 	for comment in all_comments:
-		i = i + 1
 		comment_response_code = get_comment_response_code(comment) 
 		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
@@ -82,7 +81,8 @@ def run_bot(r, comments_replied_to):
 				comments_replied_to.append(comment.id)
 				with open ("comments_replied_to.txt", "a") as f:
 					f.write(comment.id + "\n")
-
+		i = i + 1
+	
 	print ("Search Completed.")
 
 	print (comments_replied_to)
