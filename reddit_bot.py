@@ -55,6 +55,8 @@ def generate_comment_reply(comment, sentiment):
 	print(sentiment)
 	print("+++\n")
 	lowerc = comment.body.lower()
+        if "trump" not in lowerc or "donald" not in lowerc:
+            return ""
 	if "trump" in lowerc and "impeach" in lowerc:
 		xra=random.random(1,3)
 		if xra is 1:
