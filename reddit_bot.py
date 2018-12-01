@@ -3,6 +3,8 @@ import config
 import time
 import os
 import requests
+import sys
+import string
 
 sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
@@ -32,25 +34,24 @@ MAGMA = 17
 WINDMILLS = 18
 KATE_MIDDLETON = 19
 
-# Given comment text, can/should the bot reply to it?
-def get_comment_response_code(comment):
-	if "this is for testing" in comment.body:
-		return TEST_COMMENT
-	return -1 #DO_NOT_RESPOND
-	
+
 # Given the comment, sentiment, and response code, generate a response
 # comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
 # sentiment: number between 0 (negative) and 1 (positive). -1 for when there is no sentiment analysis
 # response code: See the list of codes above
-def generate_comment_reply(comment, sentiment, responsecode):
+def generate_comment_reply(comment, sentiment):
 	print(comment.body)
 	print(sentiment)
-	print(responsecode)
 	print("+++\n")
-	if responsecode == TEST_COMMENT:
-		return "Test comment"
+	if "global warming" in comment.body.lower():
+		if "china" in comment.body.lower():
+			"The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
+		return "It’s freezing and snowing in New York--we need global warming! \n\nhttps://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
+		
 	return "Invalid Response Code"
 
+	
+	
 def bot_login():
 	print ("Logging in...")
 	r = praw.Reddit('replybot', user_agent='TrumpReplyBot user agent')
@@ -85,10 +86,9 @@ def run_bot(r, comments_replied_to):
 	i = 0
 	print(all_comments)
 	for comment in all_comments:
-		comment_response_code = get_comment_response_code(comment) 
-		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
-			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
-			if reply_to_comments:
+		if comment.id not in comments_replied_to and comment.author != r.user.me():
+			resp = generate_comment_reply(comment, comment_sentiments[i])
+			if reply_to_comments and not len(resp) > 0:
 				comment.reply(resp)
 				print ("Replied to comment " + comment.id)
 			print ("Response: " + str(resp))
