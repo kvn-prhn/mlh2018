@@ -7,8 +7,8 @@ import requests
 sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
 reply_to_comments = False
-include_sentiments = False
-comments_to_search = 10
+include_sentiments = True
+comments_to_search = 20
 
 # comment response codes
 DO_NOT_RESPOND = 0
@@ -17,7 +17,6 @@ TEST_COMMENT = 1
 
 # Given comment text, can/should the bot reply to it?
 def get_comment_response_code(comment):
-	print("testing response code for comment: " + str(comment))
 	if "this is for testing" in comment.body:
 		return TEST_COMMENT
 	return -1 #DO_NOT_RESPOND
@@ -25,7 +24,7 @@ def get_comment_response_code(comment):
 	
 # Given the comment, sentiment, and response code, generate a response
 # comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
-# sentiment: number between 0 (negative) and 1 (positive)
+# sentiment: number between 0 (negative) and 1 (positive). -1 for when there is no sentiment analysis
 # response code: See the list of codes above
 def generate_comment_reply(comment, sentiment, responsecode):
 	print(comment.body)
@@ -36,8 +35,6 @@ def generate_comment_reply(comment, sentiment, responsecode):
 		return "Test comment"
 	return "Invalid Response Code"
 
-	
-	
 def bot_login():
 	print ("Logging in...")
 	r = praw.Reddit('replybot', user_agent='TrumpReplyBot user agent')
@@ -73,7 +70,6 @@ def run_bot(r, comments_replied_to):
 	print(all_comments)
 	for comment in all_comments:
 		i = i + 1
-		print(i)
 		comment_response_code = get_comment_response_code(comment) 
 		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
