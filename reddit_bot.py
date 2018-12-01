@@ -25,9 +25,7 @@ PUTIN = 5
 DIET_COKE = "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
 TRUMP_INSULT = 7
 NEW_YORK = 8
-tweetimpeach = "As has been stated by numerous legal scholars, I have the absolute right to PARDON myself,
-but why would I do that when I have done nothing wrong? In the meantime, the never ending Witch Hunt, 
-led by 13 very Angry and Conflicted Democrats (& others) continues into the mid-terms!"
+tweetimpeach = "As has been stated by numerous legal scholars, I have the absolute right to PARDON myself, but why would I do that when I have done nothing wrong? In the meantime, the never ending Witch Hunt, led by 13 very Angry and Conflicted Democrats (& others) continues into the mid-terms!"
 tweetimpeach2="are you allowed to impeach a president for gross incompetence?"
 tweetimpeach3="We need a President who isn't a laughing stock to the entire World. We need a truly great leader, a genius at strategy and winning. Respect!"
 fkface="Amazing how the haters & losers keep tweeting the name “F**kface Von Clownstick” like they are so original & like no one else is doing it…"
@@ -58,7 +56,7 @@ def generate_comment_reply(comment, sentiment):
         if "trump" not in lowerc or "donald" not in lowerc:
             return ""
 	if "trump" in lowerc and "impeach" in lowerc:
-		xra=random.random(1,3)
+		xra=random.randint(1,3)
 		if xra is 1:
 			return tweetimpeach
 		elif xra is 2:
