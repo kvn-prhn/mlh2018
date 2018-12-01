@@ -81,8 +81,6 @@ def generate_comment_reply(comment, sentiment):
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
 	
-	if "economy" in lowerc or "taxes" in lowerc or "employment" in lowerc:
-		return TAXES_ECONOMY
 	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
 		return KANYE_KARDASHIAN
 	if "deal" in lowerc and ("trump" in lowerc or "donald" in lowerc):
