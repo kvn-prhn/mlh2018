@@ -5,6 +5,7 @@ import os
 import requests
 import sys
 import string
+import random
 
 sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
@@ -22,9 +23,14 @@ PUTIN = 5
 DIET_COKE = 6
 TRUMP_INSULT = 7
 NEW_YORK = 8
-IMPEACH = 9
-TWITTER = 10
-TAXES_ECONOMY = 11
+tweetimpeach = "As has been stated by numerous legal scholars, I have the absolute right to PARDON myself,
+but why would I do that when I have done nothing wrong? In the meantime, the never ending Witch Hunt, 
+led by 13 very Angry and Conflicted Democrats (& others) continues into the mid-terms!"
+tweetimpeach2="are you allowed to impeach a president for gross incompetence?"
+tweetimpeach3="We need a President who isn't a laughing stock to the entire World. We need a truly great leader, a genius at strategy and winning. Respect!"
+fkface="Amazing how the haters & losers keep tweeting the name “F**kface Von Clownstick” like they are so original & like no one else is doing it…"
+twitter = "Thanks- many are saying I'm the best 140 character writer in the world. It's easy when it's fun."
+econ= "Employment is up, Taxes are DOWN. Enjoy!"
 COFEVE = 12
 THE_WALL = 13
 MAC_MILLER = 14
@@ -45,12 +51,27 @@ def generate_comment_reply(comment, sentiment):
 	print("+++\n")
 	lowerc = comment.body.lower()
 	if "global warming" in lowerc:
-		if "china" in comment.body.lower():
-			"The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
+		if "china" in lowerc:
+                    return "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
 		return "It’s freezing and snowing in New York--we need global warming! \n\nhttps://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
-	
+        if "trump" in lowerc and "impeach" in lowerc:
+            xra=random.random(1,3)
+            if xra is 1:
+                return tweetimpeach
+            elif xra is 2:
+                return tweetimpeach2
+            else:
+                return tweetimpeach3 
+        if "trump" in lowerc and "fuckface" in lowerc:
+            return fkface
+        if "trump" in lowerc and "twitter" in lowerc:
+            return twitter
+        if "trump" in lowerc:
+            if "economy" in lowerc or "taxes" in lowerc:
+                return econ
+
 	return ""
 
 	
