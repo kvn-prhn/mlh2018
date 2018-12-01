@@ -2,12 +2,18 @@ import praw
 import config
 import time
 import os
+import requests
+
+sentiment_api_url = "https://southcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
 reply_to_comments = False
-comments_to_search = 5
+include_sentiments = False
+comments_to_search = 10
 
+# comment response codes
 DO_NOT_RESPOND = 0
 TEST_COMMENT = 1
+
 
 # Given comment text, can/should the bot reply to it?
 def get_comment_response_code(comment):
@@ -16,12 +22,17 @@ def get_comment_response_code(comment):
 	return DO_NOT_RESPOND
 
 	
-def generate_comment_reply(comment, responsecode):
+# Given the comment, sentiment, and response code, generate a response
+# comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
+# sentiment: number between 0 (negative) and 1 (positive)
+# response code: See the list of codes above
+def generate_comment_reply(comment, sentiment, responsecode):
+	print(sentiment)
 	if responsecode == TEST_COMMENT:
 		return "Test comment"
 	return "Invalid Response Code"
 
-
+	
 	
 def bot_login():
 	print ("Logging in...")
@@ -32,11 +43,32 @@ def bot_login():
 
 def run_bot(r, comments_replied_to):
 	print ("Searching last " + str(comments_to_search) + " comments")
-
-	for comment in r.subreddit('test').comments(limit=comments_to_search):
-		comment_response_code = get_comment_response_code(comment)
+	all_comments =  r.subreddit('test').comments(limit=comments_to_search)
+	comment_sentiments = []
+	if include_sentiments:
+		sentiment_docs = []
+		i = 0
+		for comment in all_comments:
+			sentiment_docs.append({'id': str(i), 'language': 'en', 'text': str(comment.body)});
+			i = i + 1
+		documents = {'documents' : sentiment_docs}
+		headers = {'Ocp-Apim-Subscription-Key': config.subscription_key, 'Content-Type': "application/json"}
+		# sentiment API stuff
+		response = requests.post(sentiment_api_url, headers=headers, json=documents)
+		sentiments = response.json()
+		for sres in sentiments['documents']:
+			print(sres)
+			comment_sentiments.insert(int(sres['id']), sres['score'])
+	else:
+		for comment in all_comments:
+			comment_sentiments.append(-1) # -1 when it is not being used.
+	
+	i = 0
+	for comment in all_comments:
+		i = i + 1
+		comment_response_code = get_comment_response_code(comment) 
 		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
-			resp = generate_comment_reply(comment, comment_response_code)
+			resp = generate_comment_reply(comment, comment_sentiments[i], comment_response_code)
 			if reply_to_comments:
 				comment.reply(resp)
 			print ("Replied to comment " + comment.id)
