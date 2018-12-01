@@ -43,12 +43,15 @@ def generate_comment_reply(comment, sentiment):
 	print(comment.body)
 	print(sentiment)
 	print("+++\n")
-	if "global warming" in comment.body.lower():
+	lowerc = comment.body.lower()
+	if "global warming" in lowerc:
 		if "china" in comment.body.lower():
 			"The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive. \n\nhttps://twitter.com/realDonaldTrump/status/265895292191248385"
 		return "It’s freezing and snowing in New York--we need global warming! \n\nhttps://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
-		
-	return "Invalid Response Code"
+	if "diet coke" in lowerc or "diet soda" in lowerc:
+		return "I have never seen a thin person drinking Diet Coke.\n\nhttps://twitter.com/realDonaldTrump/status/257552283850653696https://twitter.com/realDonaldTrump/status/257552283850653696"
+	
+	return ""
 
 	
 	
