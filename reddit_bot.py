@@ -59,7 +59,13 @@ def generate_comment_reply(comment, sentiment):
 			return GLOBAL_WARMING_3
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
-	
+	if "trump" in lowerc and if sentiment < 0.9 and if sentiment > 0.2:
+		return "Every time I speak of the haters and losers I do so with great love and affection. They cannot help the fact that they were born fucked up!\n https://twitter.com/realDonaldTrump/status/516382177798680576"
+	if "trump" in lowerc and if sentiment < 0.2:
+		return "SEE YOU IN COURT, THE SECURITY OF OUR NATION IS AT STAKE!\n https://twitter.com/realdonaldtrump/status/829836231802515457?lang=en"
+	if "new york" in lowerc:
+		return "It’s freezing and snowing in New York--we need global warming!\n https://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
+
 	if "economy" in lowerc or "taxes" in lowerc or "employment" in lowerc:
 		return TAXES_ECONOMY
 	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
