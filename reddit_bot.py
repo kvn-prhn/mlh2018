@@ -56,31 +56,40 @@ def generate_comment_reply(comment, sentiment):
 	print("+++\n")
 	lowerc = comment.body.lower()
 	if "trump" in lowerc and "impeach" in lowerc:
-            xra=random.random(1,3)
-            if xra is 1:
-                return tweetimpeach
-            elif xra is 2:
-                return tweetimpeach2
-            else:
-                return tweetimpeach3 
-        if "trump" in lowerc and "fuckface" in lowerc:
-            return fkface
-        if "trump" in lowerc and "twitter" in lowerc:
-            return twitter
-        if "trump" in lowerc:
-            if "economy" in lowerc or "taxes" in lowerc:
-                return econ
-        if "global warming" in lowerc:
-	    if "china" in lowerc or "chinese" in lowerc:
-		    return GLOBAL_WARMING_1
+		xra=random.random(1,3)
+		if xra is 1:
+			return tweetimpeach
+		elif xra is 2:
+			return tweetimpeach2
+		else:
+			return tweetimpeach3 
+	if "trump" in lowerc and "fuckface" in lowerc:
+		return fkface
+	if "trump" in lowerc and "twitter" in lowerc:
+		return twitter
+	if "trump" in lowerc:
+		if "economy" in lowerc or "taxes" in lowerc:
+			return econ
+	if "global warming" in lowerc:
+		if "china" in lowerc or "chinese" in lowerc:
+			return GLOBAL_WARMING_1
 		# else
-	    if random.random() < 0.5:
-	    	return GLOBAL_WARMING_2
-	    else:
-	    	return GLOBAL_WARMING_3
+		if random.random() < 0.5:
+			return GLOBAL_WARMING_2
+		else:
+			return GLOBAL_WARMING_3
 	if "diet coke" in lowerc or "diet soda" in lowerc:
 		return DIET_COKE
 	
+	if "trump" in lowerc and sentiment < 0.9 and sentiment > 0.2:
+		return "Every time I speak of the haters and losers I do so with great love and affection. They cannot help the fact that they were born fucked up!\n https://twitter.com/realDonaldTrump/status/516382177798680576"
+	if "trump" in lowerc and sentiment < 0.2:
+		return "SEE YOU IN COURT, THE SECURITY OF OUR NATION IS AT STAKE!\n https://twitter.com/realdonaldtrump/status/829836231802515457?lang=en"
+	if "new york" in lowerc:
+		return "It’s freezing and snowing in New York--we need global warming!\n https://twitter.com/realdonaldtrump/status/266259787405225984?lang=en"
+
+	if "trump" in lowerc and ("economy" in lowerc or "taxes" in lowerc or "employment" in lowerc):
+		return TAXES_ECONOMY
 	if ("kanye" in lowerc or "kardashian" in lowerc) and sentiment > 0.5:
 		return KANYE_KARDASHIAN
 	if "deal" in lowerc and ("trump" in lowerc or "donald" in lowerc):
@@ -91,13 +100,13 @@ def generate_comment_reply(comment, sentiment):
 		else:
 			return WITCH_HUNT_2
 	if "china" in lowerc or "chinese" in lowerc:
-                return CHINA
-        if "maga" in lowerc or "make america great again" in lowerc:
-                return MAGA
-        if "windmills" in lowerc:
-                return WINDMILLS
-        if "kate middleton" in lowerc:
-                return KATE_MIDDLETON
+		return CHINA
+	if "maga" in lowerc or "make america great again" in lowerc:
+		return MAGA
+	if "windmills" in lowerc:
+		return WINDMILLS
+	if "kate middleton" in lowerc:
+		return KATE_MIDDLETON
 	return ""
 
 	
