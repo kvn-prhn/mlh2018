@@ -3,6 +3,7 @@ import config
 import time
 import os
 
+reply_to_comments = False
 comments_to_search = 5
 
 DO_NOT_RESPOND = 0
@@ -36,11 +37,15 @@ def run_bot(r, comments_replied_to):
 		comment_response_code = get_comment_response_code(comment)
 		if not comment_response_code == DO_NOT_RESPOND and comment.id not in comments_replied_to and comment.author != r.user.me():
 			resp = generate_comment_reply(comment, comment_response_code)
-			comment.reply(resp)
+			if reply_to_comments:
+				comment.reply(resp)
 			print ("Replied to comment " + comment.id)
-			comments_replied_to.append(comment.id)
-			with open ("comments_replied_to.txt", "a") as f:
-				f.write(comment.id + "\n")
+			print ("Response: " + resp)
+			
+			if reply_to_comments:
+				comments_replied_to.append(comment.id)
+				with open ("comments_replied_to.txt", "a") as f:
+					f.write(comment.id + "\n")
 
 	print ("Search Completed.")
 
