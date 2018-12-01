@@ -13,14 +13,30 @@ comments_to_search = 20
 # comment response codes
 DO_NOT_RESPOND = 0
 TEST_COMMENT = 1
-
+GLOBAL_WARMING = 2
+KANYE_KARDASHIAN = 3
+RUSSIA = 4
+PUTIN = 5
+DIET_COKE = 6
+TRUMP_INSULT = 7
+NEW_YORK = 8
+IMPEACH = 9
+TWITTER = 10
+TAXES_ECONOMY = 11
+COFEVE = 12
+THE_WALL = 13
+MAC_MILLER = 14
+THE_DONALD = 15
+CHINA = 16
+MAGMA = 17
+WINDMILLS = 18
+KATE_MIDDLETON = 19
 
 # Given comment text, can/should the bot reply to it?
 def get_comment_response_code(comment):
 	if "this is for testing" in comment.body:
 		return TEST_COMMENT
 	return -1 #DO_NOT_RESPOND
-
 	
 # Given the comment, sentiment, and response code, generate a response
 # comment class: https://praw.readthedocs.io/en/latest/code_overview/models/comment.html
